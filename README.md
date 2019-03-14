@@ -17,11 +17,11 @@ When you have virtualenv installed, create a new Python environment and activate
 virtualenv interview_env
 source interview_env/bin/activate
 ```
-Next, install some requirements by running: `make build`, This may take a minute or two. When you're able to install the packages, you're all done!
+Next, install some requirements by running: `make build`. This may take a minute or two. When you're able to install the packages, you're all done!
 
 ### Checking you're done
 
-First, make sure your PYTHONPATH environment variable is set correctly. This can be done by running the following command:
+First, add the newly cloned repo's path to your current PYTHONPATH environment variable by running this command:
 ```bash
 export PYTHONPATH=/path/to/this/repo:$PYTHONPATH
 ```
@@ -31,7 +31,7 @@ When you have the dependencies installed, try the following command:
 make run
 ```
 
-You can then visit this URL `localhost:3031/v1/company_query_builder?revenue=20150101-20160101"`
+You can then visit this URL `localhost:3031/v1/company_query_builder?revenue=20150101-20160101`
 
 
 You should see the following output:
