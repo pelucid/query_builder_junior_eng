@@ -1,4 +1,4 @@
-from query_builder.server import get_es_query
+from query_builder.app.server import get_es_query
 from query_builder.tests.end_to_end.es_query_template import full_es_query
 
 def trade_activity_template(gte=None, lte=None):

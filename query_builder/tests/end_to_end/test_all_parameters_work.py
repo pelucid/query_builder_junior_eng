@@ -1,6 +1,6 @@
 import pytest
 
-from query_builder.server import get_es_query
+from query_builder.app.server import get_es_query
 
 
 @pytest.mark.parametrize('url', [
