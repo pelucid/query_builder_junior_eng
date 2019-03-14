@@ -3,7 +3,7 @@
 
 import datetime
 import json
-import logging
+import glogging
 import os
 
 
@@ -14,37 +14,24 @@ from query_builder.app.elastic import companies_search
 api_version = settings.app_settings["version"]
 
 
-
 class Piston(object):
     """Logic for converting parameter dictionaries into Elasticsearch Query"""
 
     def __init__(self, logger=None):
-
-        api_directory = os.path.dirname(os.path.abspath(api_path))
+        api_directory = os.path.join(os.path.dirname(os.path.abspath(api_path)), 'logs')
         if logger:
             self.log = logger
         else:
-            self.log = logging.getLogger("query_builder.piston")
-            self.log.setLevel(logging.DEBUG)
-            log_path = "{0}/logs/query_builder.piston.log".format(api_directory)
-            f_handler = logging.FileHandler(log_path)
-            self.log.addHandler(f_handler)
+            self.log = glogging.GLogging(logname='query_builder.piston', logdir=api_directory, log_to_screen=False)
+            self.log.setLevel("DEBUG")
 
-        log_format = ("%(asctime)s - "
-                      "v{0} - %(levelname)s - %(message)s".format(api_version))
-        self.queries_log = logging.getLogger("query_builder.piston.queries")
-        self.queries_log.setLevel(logging.DEBUG)
-        self.queries_log.propagate = False
-        log_path = "{0}/logs/query_builder.piston.queries.log".format(api_directory)
-        f_handler = logging.FileHandler(log_path)
-        formatter = logging.Formatter(log_format)
-        f_handler.setFormatter(formatter)
-        self.queries_log.addHandler(f_handler)
+        self.queries_log = glogging.GLogging(logname="query_builder.piston.queries", logdir=api_directory, log_to_screen=False)
+        self.queries_log.setLevel("DEBUG")
+
         self.dthandler = (lambda obj: obj.isoformat()
                             if isinstance(obj, datetime.datetime) or
                                isinstance(obj, datetime.date)
                             else None)
-
 
     def _log_query(self, query):
         """Write ES query to log file.
@@ -52,9 +39,7 @@ class Piston(object):
         Args:
             query: ES query as a python dict
         """
-        self.queries_log.debug("doc_type: {0}, query: {1}".format("company",
-                            json.dumps(query, default=self.dthandler)))
-
+        self.queries_log.debug("doc_type: {0}, query: {1}".format("company", json.dumps(query, default=self.dthandler)))
 
     def company_search(self, params):
         """Search for companies by any parameter.
@@ -67,6 +52,5 @@ class Piston(object):
         # Build the query from the params
         es_query = companies_search.query_builder(params)
         self._log_query(es_query)
-
 
         return es_query

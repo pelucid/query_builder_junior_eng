@@ -5,8 +5,12 @@ $(error VIRTUAL / CONDA ENV is not set - please activate environment)
 endif
 endif
 
-deps: venv
+build: venv
 	pip install -Ur requirements.txt
+	pip install -Ur requirements_private.txt
 
 test: venv
 	pytest -svv tests/
+
+run: venv
+	python query_builder/app/server.py
