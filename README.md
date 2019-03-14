@@ -4,11 +4,11 @@
 
 Thanks for coming in for the day at GrowthIntel. To make sure that we can use our time best in the day, we'd like to have you do some setup in advance. For the majority of the day you'll be working in this repo, on a Elasticsearch query building API.
 
-### Setup - Installing Python, Virtualenv
+### Setup - Installing Docker, Python, Virtualenv
 
-First, clone this repository to your computer via the links on the right (creating a fork of the repository is not necessary). 
+First, clone this repository to your computer via the links on the right (creating a fork of the repository is not necessary). Please also ensure you have Python 2.7 and Docker installed.
 
-Next, ensure that you have virtualenv installed. You can find installation instructions for `virtualenv` [here](https://virtualenv.pypa.io/en/latest/installation.html), and more general help with `pip` and Python package management [here](https://docs.python.org/2.7/installing/index.html). Note, we will be working with Python 2.7.
+Next, ensure that you have virtualenv installed. You can find installation instructions for `virtualenv` [here](https://virtualenv.pypa.io/en/latest/installation.html), and more general help with `pip` and Python package management [here](https://docs.python.org/2.7/installing/index.html). 
 
 ### Setup - Installing Project Requirements
 
