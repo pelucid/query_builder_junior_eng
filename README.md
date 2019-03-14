@@ -6,7 +6,9 @@ Thanks for coming in for the day at GrowthIntel. To make sure that we can use ou
 
 ### Setup - Installing Python, Virtualenv
 
-First, clone this repository to your computer via the links on the right (creating a fork of the repository is not necessary). Next, ensure that you have virtualenv installed. If you're using Debian or Ubuntu, you likely want to run `sudo apt-get install python-virtualenv python-dev build-essential`. Otherwise, you can find installation instructions for `virtualenv` [here](https://virtualenv.pypa.io/en/latest/installation.html), and more general help with `pip` and Python package management [here](https://docs.python.org/2.7/installing/index.html). Note, we will be working with Python 2.7.
+First, clone this repository to your computer via the links on the right (creating a fork of the repository is not necessary). 
+
+Next, ensure that you have virtualenv installed. If you're using Debian or Ubuntu, you likely want to run `sudo apt-get install python-virtualenv python-dev build-essential`. Otherwise, you can find installation instructions for `virtualenv` [here](https://virtualenv.pypa.io/en/latest/installation.html), and more general help with `pip` and Python package management [here](https://docs.python.org/2.7/installing/index.html). Note, we will be working with Python 2.7.
 
 ### Setup - Installing Project Requirements
 
@@ -15,7 +17,7 @@ When you have virtualenv installed, create a new Python environment and activate
 virtualenv interview_env
 source interview_env/bin/activate
 ```
-Next, install some requirements by running: `pip install -r requirements.txt`, where requirements.txt is the path to the accompanying file. This may take a minute or two. When you're able to install the packages in requirements.txt, you're all done!
+Next, install some requirements by running: `make build`, This may take a minute or two. When you're able to install the packages, you're all done!
 
 ### Checking you're done
 
@@ -26,8 +28,12 @@ export PYTHONPATH=/path/to/this/repo:$PYTHONPATH
 When you have the dependencies installed, try the following command:
 
 ```bash
-python main.py "/v1/company_query_builder?revenue=20150101-20160101"
+make run
 ```
+
+You can then visit this URL `localhost:3031/v1/company_query_builder?revenue=20150101-20160101"`
+
+
 You should see the following output:
 ```json
 {

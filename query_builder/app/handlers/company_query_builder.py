@@ -6,6 +6,13 @@ from query_builder import exceptions
 from query_builder.app.elastic.piston import Piston
 from query_builder.app.handlers.pagination import Pagination
 from query_builder.config.app import settings
+from query_builder.app.handlers.filter_types import NumericRange
+
+
+FILTER_MAP = {
+    'cash': NumericRange,
+    'revenue': NumericRange
+}
 
 
 class CompanyQueryBuilder(object):
@@ -52,9 +59,19 @@ class CompanyQueryBuilder(object):
     def parse_parameters(self, org=None, model_config=None):
         """Parse the URL parameters and build parsed_params dict."""
 
+        for param_key in settings.COMPANIES_FILTERS:
+            param_value = self.get_argument(param_key)
+            filter_ = FILTER_MAP.get(param_key, None)
+            if filter_ is not None:
+                f = filter_(param_key, param_value)
+                f.parse_and_validate()
+                serialised_filter = f.serialise()
+                self.parsed_params.update(serialised_filter)
+
+
         # e.g. cash=1000-10000 or total_assets=-5000
-        self.parse_range_argument("cash")
-        self.parse_range_argument("revenue")
+        #self.parse_range_argument("cash")
+        #self.parse_range_argument("revenue")
 
         # Args which may have multiple queries e.g. &cid=1&cid=2
         self.parse_get_arguments("cid", "cids")

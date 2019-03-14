@@ -10,7 +10,7 @@ build: venv
 	pip install -Ur requirements_private.txt
 
 test: venv
-	pytest -svv tests/
+	pytest -svv query_builder/tests/
 
 run: venv
 	python query_builder/app/server.py
