@@ -14,3 +14,5 @@ def test_numeric_range(input, expected_lower, expected_upper):
     filter.parse_and_validate()
     assert filter.lower == expected_lower
     assert filter.upper == expected_upper
+
+# TODO Test Failure Cases
