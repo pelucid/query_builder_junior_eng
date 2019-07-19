@@ -5,7 +5,7 @@ $(error VIRTUAL / CONDA ENV is not set - please activate environment)
 endif
 endif
 
-build: venv
+deps: venv
 	pip install -Ur requirements.txt
 	pip install -Ur requirements_private.txt
 
