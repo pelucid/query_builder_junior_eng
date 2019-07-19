@@ -6,7 +6,7 @@ Thanks for coming in for the day at Growth Intelligence. For the majority of the
 
 ### Setup - Installing Python, Virtualenv
 
-First, clone this repository to your computer via the links on the right (creating a fork of the repository is not necessary). Please also ensure you have Python 2.7 installed.
+First, clone this repository to your computer via the links on the right (please use "Clone with SSH", creating a fork of the repository is not necessary). You will need to have SSH keys setup for your github account for this to work - we can set this up if you're not sure how. Please also ensure you have Python 2.7 installed.
 
 Next, ensure that you have virtualenv installed. You can find installation instructions for `virtualenv` [here](https://virtualenv.pypa.io/en/latest/installation.html), and more general help with `pip` and Python package management [here](https://docs.python.org/2.7/installing/index.html). 
 
