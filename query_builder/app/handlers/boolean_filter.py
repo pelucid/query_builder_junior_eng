@@ -5,9 +5,10 @@ from query_builder.app.handlers.base_filter import BaseFilter
 
 class Boolean(BaseFilter):
 
-    def __init__(self, *args, **kwargs):
-        super(Boolean, self).__init__(*args, **kwargs)
+    def __init__(self, key, value, include_if_false=True, **kwargs):
+        super(Boolean, self).__init__(key, value)
         self.bool_val = None
+        self.include_if_false = include_if_false
 
     def _parse(self):
         if not self.url_value:
@@ -25,6 +26,7 @@ class Boolean(BaseFilter):
         pass
 
     def serialise(self):
-        pass
-
-
+        if not (self.include_if_false or self.bool_val):
+            return {}
+        else:
+            return {self.url_key: self.bool_val}

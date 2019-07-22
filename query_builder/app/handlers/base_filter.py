@@ -24,8 +24,6 @@ class BaseFilter(object):
 
 
 """
-class Boolean(BaseFilter)
-
 
 class Dates(BaseFilter)
 

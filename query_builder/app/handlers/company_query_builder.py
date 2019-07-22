@@ -7,14 +7,15 @@ from query_builder.app.elastic.piston import Piston
 from query_builder.app.handlers.pagination import Pagination
 from query_builder.config.app import settings
 from query_builder.app.handlers.numeric_range_filter import NumericRange
+from query_builder.app.handlers.boolean_filter import Boolean
 
 
 FILTER_MAP = {
     'cash': NumericRange,
     'revenue': NumericRange,
-    # 'exclude_tps': Boolean,
-    # 'ecommerce': Boolean,
-    # 'aggregate': Boolean,
+    'exclude_tps': Boolean,
+    'ecommerce': Boolean,
+    'aggregate': Boolean,
     # 'trading_activity': Dates,
     # 'cid': __,
     # 'cids': __,
@@ -38,6 +39,7 @@ class CompanyQueryBuilder(object):
         """Handle get requests to /company_query_builder"""
         self.pagination = Pagination(limit=self.get_argument("limit", None),
                                      offset=self.get_argument("offset", 0))
+
         self.validate_args(self.valid_args)
         self.parse_parameters()
         self.parsed_params["size"] = self.pagination.page_size
@@ -78,10 +80,6 @@ class CompanyQueryBuilder(object):
                 serialised_filter = f.serialise()
                 self.parsed_params.update(serialised_filter)
 
-        # THESE CASES ARE COVERED BY REFACTOR ABOVE
-        # e.g. cash=1000-10000 or total_assets=-5000
-        #self.parse_range_argument("cash")
-        #self.parse_range_argument("revenue")
 
         # Args which may have multiple queries e.g. &cid=1&cid=2
         self.parse_get_arguments("cid", "cids")
@@ -89,10 +87,6 @@ class CompanyQueryBuilder(object):
 
         # Special cases requiring custom logic
         self.parse_trading_activity()
-
-        self.parse_boolean_argument("exclude_tps", include_if_false=False)
-        self.parse_boolean_argument("ecommerce", include_if_false=False)
-        self.parse_boolean_argument("aggregate")
 
 # move next to parse_dates
     def parse_trading_activity(self):
@@ -111,7 +105,6 @@ class CompanyQueryBuilder(object):
         args = self.get_arguments(arg)
         if args:
             self.add_to_parsed_params(key, args)
-
 
 
     def parse_date(self, arg):
@@ -138,30 +131,7 @@ class CompanyQueryBuilder(object):
             if dateto:
                 self.parsed_params[key]["lte"] = dateto
 
+
     def add_to_parsed_params(self, param_key, param_value):
         """Add params to parsed_params if arg exists"""
         self.parsed_params[param_key] = param_value
-
-    def parse_boolean_argument(self, arg, include_if_false=True):
-        """Update parsed params with boolean arg value."""
-        arg_val = self.parse_boolean(arg)
-        if arg_val or include_if_false:
-            self.parsed_params[arg] = arg_val
-
-    def parse_boolean(self, arg):
-        """Parse boolean argument types
-
-        Returns True or False if argument is present, otherwise None."""
-
-        arg_param = self.get_argument(arg, None)
-        if not arg_param:
-            return None
-
-        arg_check_int = re.search("^[0-1]$", arg_param)
-        arg_check_bool = re.search("^true|false", arg_param.lower())
-        if arg_check_int:
-            return bool(int(arg_param))
-        elif arg_check_bool:
-            return {"true": True, "false": False}[arg_param.lower()]
-        else:
-            raise exceptions.ParameterValueError(key=arg, value=arg_param)
