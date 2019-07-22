@@ -6,12 +6,21 @@ from query_builder import exceptions
 from query_builder.app.elastic.piston import Piston
 from query_builder.app.handlers.pagination import Pagination
 from query_builder.config.app import settings
-from query_builder.app.handlers.filter_types import NumericRange
+from query_builder.app.handlers.base_filter import NumericRange
 
 
 FILTER_MAP = {
     'cash': NumericRange,
-    'revenue': NumericRange
+    'revenue': NumericRange,
+    'exclude_tps': Boolean,
+    'ecommerce': Boolean,
+    'aggregate': Boolean,
+    'trading_activity': Dates,
+    # 'cid': __,
+    # 'cids': __,
+    # 'sector_context': ___,
+    # 'sectors': ___
+
 }
 
 
@@ -85,6 +94,7 @@ class CompanyQueryBuilder(object):
         self.parse_boolean_argument("ecommerce", include_if_false=False)
         self.parse_boolean_argument("aggregate")
 
+# move next to parse_dates
     def parse_trading_activity(self):
         """Parse trading activity parameters"""
         url_arg = self.get_argument('trading_activity', None)
@@ -92,6 +102,8 @@ class CompanyQueryBuilder(object):
             self.parsed_params["trading_activity"] = dict()
             self.parse_dates(url_arg, "trading_activity")
 
+
+mo
     def parse_boolean_argument(self, arg, include_if_false=True):
         """Update parsed params with boolean arg value."""
         arg_val = self.parse_boolean(arg)
