@@ -1,3 +1,5 @@
+import re
+from query_builder import exceptions
 from query_builder.app.handlers.base_filter import BaseFilter
 
 class NumericRange(BaseFilter):
