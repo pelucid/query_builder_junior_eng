@@ -1,4 +1,3 @@
-import datetime
 import re
 import urlparse
 
@@ -8,6 +7,8 @@ from query_builder.app.handlers.pagination import Pagination
 from query_builder.config.app import settings
 from query_builder.app.handlers.numeric_range_filter import NumericRange
 from query_builder.app.handlers.boolean_filter import Boolean
+from query_builder.app.handlers.dates_filter import Dates
+
 
 
 FILTER_MAP = {
@@ -16,12 +17,11 @@ FILTER_MAP = {
     'exclude_tps': Boolean,
     'ecommerce': Boolean,
     'aggregate': Boolean,
-    # 'trading_activity': Dates,
+    'trading_activity': Dates
     # 'cid': __,
     # 'cids': __,
     # 'sector_context': ___,
     # 'sectors': ___
-
 }
 
 
@@ -85,18 +85,6 @@ class CompanyQueryBuilder(object):
         self.parse_get_arguments("cid", "cids")
         self.parse_get_arguments("sector_context", "sectors")
 
-        # Special cases requiring custom logic
-        self.parse_trading_activity()
-
-# move next to parse_dates
-    def parse_trading_activity(self):
-        """Parse trading activity parameters"""
-        url_arg = self.get_argument('trading_activity', None)
-        if url_arg:
-            self.parsed_params["trading_activity"] = dict()
-            self.parse_dates(url_arg, "trading_activity")
-
-
 
 
     def parse_get_arguments(self, arg, key=None):
@@ -105,31 +93,6 @@ class CompanyQueryBuilder(object):
         args = self.get_arguments(arg)
         if args:
             self.add_to_parsed_params(key, args)
-
-
-    def parse_date(self, arg):
-        """ Parse a date argument """
-
-        if arg:
-            try:
-                parameter = datetime.datetime.strptime(
-                    arg, '%Y%m%d').date().isoformat()
-                return parameter
-            except Exception as e:
-                raise exceptions.ParameterValueError(key=arg, value=arg,
-                                                     message=e.message)
-
-    def parse_dates(self, url_arg, key):
-        """Parse the dates arguments from URL params."""
-        datefrom, dateto = url_arg.split('-')
-        datefrom = self.parse_date(datefrom)
-        dateto = self.parse_date(dateto)
-        if datefrom or dateto:
-            self.parsed_params[key] = {}
-            if datefrom:
-                self.parsed_params[key]["gte"] = datefrom
-            if dateto:
-                self.parsed_params[key]["lte"] = dateto
 
 
     def add_to_parsed_params(self, param_key, param_value):
