@@ -69,8 +69,8 @@ class Boolean(BaseFilter):
 
     def __init__(self, *args, **kwargs):
         super(Boolean, self).__init__(*args, **kwargs)
-        self.parsed_val = None,
-        self.include_if_false = kwargs['include_if_false']
+        self.parsed_val = None
+        self.include_if_false = kwargs.get('include_if_false', True)
 
     def _parse(self):
         """Update parsed params with boolean arg value."""
@@ -100,7 +100,7 @@ class Boolean(BaseFilter):
             return None
 
         arg_check_int = re.search("^[0-1]$", arg_param)
-        arg_check_bool = re.search("^true|false", arg_param.lower())
+        arg_check_bool = re.search("^(true|false)$", arg_param.lower())
         if arg_check_int:
             return bool(int(arg_param))
         elif arg_check_bool:
