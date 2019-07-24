@@ -6,12 +6,15 @@ from query_builder import exceptions
 from query_builder.app.elastic.piston import Piston
 from query_builder.app.handlers.pagination import Pagination
 from query_builder.config.app import settings
-from query_builder.app.handlers.filter_types import NumericRange
+from query_builder.app.handlers.filter_types import NumericRange, Boolean
 
 
 FILTER_MAP = {
-    'cash': NumericRange,
-    'revenue': NumericRange
+    'cash': (NumericRange, {}),
+    'revenue': (NumericRange, {}),
+    'exclude_tps': (Boolean, {'include_if_false': False}),
+    # 'ecommerce': (Boolean, False),
+    # 'aggregate': (Boolean, True)
 }
 
 
@@ -64,7 +67,8 @@ class CompanyQueryBuilder(object):
             param_value = self.get_argument(param_key)
             filter_ = FILTER_MAP.get(param_key, None)
             if filter_ is not None:
-                f = filter_(param_key, param_value)
+                kwargs = filter_[1]
+                f = filter_[0](param_key, param_value, **kwargs)
                 f.parse_and_validate()
                 serialised_filter = f.serialise()
                 self.parsed_params.update(serialised_filter)
@@ -81,9 +85,8 @@ class CompanyQueryBuilder(object):
         # Special cases requiring custom logic
         self.parse_trading_activity()
 
-        self.parse_boolean_argument("exclude_tps", include_if_false=False)
-        self.parse_boolean_argument("ecommerce", include_if_false=False)
-        self.parse_boolean_argument("aggregate")
+        # self.parse_boolean_argument("ecommerce", include_if_false=False)
+        # self.parse_boolean_argument("aggregate")
 
     def parse_trading_activity(self):
         """Parse trading activity parameters"""
@@ -92,36 +95,12 @@ class CompanyQueryBuilder(object):
             self.parsed_params["trading_activity"] = dict()
             self.parse_dates(url_arg, "trading_activity")
 
-    def parse_boolean_argument(self, arg, include_if_false=True):
-        """Update parsed params with boolean arg value."""
-        arg_val = self.parse_boolean(arg)
-        if arg_val or include_if_false:
-            self.parsed_params[arg] = arg_val
-
     def parse_get_arguments(self, arg, key=None):
         """Update parsed params if arg in request"""
         key = key or arg
         args = self.get_arguments(arg)
         if args:
             self.add_to_parsed_params(key, args)
-
-    def parse_boolean(self, arg):
-        """Parse boolean argument types
-
-        Returns True or False if argument is present, otherwise None."""
-
-        arg_param = self.get_argument(arg, None)
-        if not arg_param:
-            return None
-
-        arg_check_int = re.search("^[0-1]$", arg_param)
-        arg_check_bool = re.search("^true|false", arg_param.lower())
-        if arg_check_int:
-            return bool(int(arg_param))
-        elif arg_check_bool:
-            return {"true": True, "false": False}[arg_param.lower()]
-        else:
-            raise exceptions.ParameterValueError(key=arg, value=arg_param)
 
     def parse_date(self, arg):
         """ Parse a date argument """
