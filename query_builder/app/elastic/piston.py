@@ -7,7 +7,7 @@ import glogging
 import os
 
 
-from query_builder.config import settings
+from query_builder.config.app import settings
 from query_builder import __file__ as api_path
 from query_builder.app.elastic import companies_search
 

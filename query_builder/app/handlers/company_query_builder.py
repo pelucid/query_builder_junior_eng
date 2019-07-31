@@ -6,13 +6,13 @@ from query_builder import exceptions
 from query_builder.app.elastic.piston import Piston
 from query_builder.app.handlers.pagination import Pagination
 from query_builder.config.app import settings
-from query_builder.app.handlers.filter_types import NumericRange
+# from query_builder.app.handlers.filter_types import NumericRange
 
 
-FILTER_MAP = {
-    'cash': NumericRange,
-    'revenue': NumericRange
-}
+# FILTER_MAP = {
+#     'cash': NumericRange,
+#     'revenue': NumericRange
+# }
 
 
 class CompanyQueryBuilder(object):
@@ -21,7 +21,9 @@ class CompanyQueryBuilder(object):
     def __init__(self, url):
         parsed_url = urlparse.urlparse(url)
         self.query_params = urlparse.parse_qs(parsed_url.query)
-        self.valid_args = settings.COMPANIES_FILTERS
+
+        valid_args = settings.COMPANIES_FILTERS.keys()
+        self.valid_args = valid_args
         self.piston = Piston()
         self.parsed_params = dict()
 
@@ -39,6 +41,7 @@ class CompanyQueryBuilder(object):
 
     def get_argument(self, name, default=None):
         return self.query_params.get(name, [default])[-1]
+        
 
     def get_arguments(self, name):
         return self.query_params.get(name, [])
@@ -59,95 +62,99 @@ class CompanyQueryBuilder(object):
     def parse_parameters(self, org=None, model_config=None):
         """Parse the URL parameters and build parsed_params dict."""
 
-        # TODO (COMPLETE REFACTOR)
-        for param_key in settings.COMPANIES_FILTERS:
-            param_value = self.get_argument(param_key)
-            filter_ = FILTER_MAP.get(param_key, None)
-            if filter_ is not None:
-                f = filter_(param_key, param_value)
+        # # TODO (COMPLETE REFACTOR)
+        # for param_key in settings.COMPANIES_FILTERS:
+        #     param_value = self.get_argument(param_key)
+        #     filter_ = FILTER_MAP.get(param_key, None)
+        #     if filter_ is not None:
+        #         f = filter_(param_key, param_value)
+        #         f.parse_and_validate()
+        #         serialised_filter = f.serialise()
+        #         self.parsed_params.update(serialised_filter)
+
+        for key,value in settings.COMPANIES_FILTERS.items():
+            param_values = self.get_arguments(key)
+            filter_ = value[0]
+            if filter_ is not None and param_values:
+                f = filter_(key, param_values, **value[1])
                 f.parse_and_validate()
                 serialised_filter = f.serialise()
                 self.parsed_params.update(serialised_filter)
 
-        # THESE CASES ARE COVERED BY REFACTOR ABOVE
-        # e.g. cash=1000-10000 or total_assets=-5000
-        #self.parse_range_argument("cash")
-        #self.parse_range_argument("revenue")
+        # # Args which may have multiple queries e.g. &cid=1&cid=2
+        # self.parse_get_arguments("cid", "cids")
+        # self.parse_get_arguments("sector_context", "sectors")
 
-        # Args which may have multiple queries e.g. &cid=1&cid=2
-        self.parse_get_arguments("cid", "cids")
-        self.parse_get_arguments("sector_context", "sectors")
+        # # Special cases requiring custom logic
+        # self.parse_trading_activity()
+        #
+        # self.parse_boolean_argument("exclude_tps", include_if_false=False)
+        # self.parse_boolean_argument("ecommerce", include_if_false=False)
+        # self.parse_boolean_argument("aggregate")
 
-        # Special cases requiring custom logic
-        self.parse_trading_activity()
+    # def parse_trading_activity(self): No longer needed
+    #     """Parse trading activity parameters"""
+    #     url_arg = self.get_argument('trading_activity', None)
+    #     if url_arg:
+    #         self.parsed_params["trading_activity"] = dict()
+    #         self.parse_dates(url_arg, "trading_activity")
 
-        self.parse_boolean_argument("exclude_tps", include_if_false=False)
-        self.parse_boolean_argument("ecommerce", include_if_false=False)
-        self.parse_boolean_argument("aggregate")
+    # def parse_boolean_argument(self, arg, include_if_false=True):
+    #     """Update parsed params with boolean arg value."""
+    #     arg_val = self.parse_boolean(arg)
+    #     if arg_val or include_if_false:
+    #         self.parsed_params[arg] = arg_val
 
-    def parse_trading_activity(self):
-        """Parse trading activity parameters"""
-        url_arg = self.get_argument('trading_activity', None)
-        if url_arg:
-            self.parsed_params["trading_activity"] = dict()
-            self.parse_dates(url_arg, "trading_activity")
+    # def parse_get_arguments(self, arg, key=None):
+    #     """Update parsed params if arg in request"""
+    #     key = key or arg
+    #     args = self.get_arguments(arg)
+    #     if args:
+    #         self.add_to_parsed_params(key, args)
 
-    def parse_boolean_argument(self, arg, include_if_false=True):
-        """Update parsed params with boolean arg value."""
-        arg_val = self.parse_boolean(arg)
-        if arg_val or include_if_false:
-            self.parsed_params[arg] = arg_val
+    # def parse_boolean(self, arg):
+    #     """Parse boolean argument types
+    #
+    #     Returns True or False if argument is present, otherwise None."""
+    #
+    #     arg_param = self.get_argument(arg, None)
+    #     if not arg_param:
+    #         return None
+    #
+    #     arg_check_int = re.search("^[0-1]$", arg_param)
+    #     arg_check_bool = re.search("^true|false", arg_param.lower())
+    #     if arg_check_int:
+    #         return bool(int(arg_param))
+    #     elif arg_check_bool:
+    #         return {"true": True, "false": False}[arg_param.lower()]
+    #     else:
+    #         raise exceptions.ParameterValueError(key=arg, value=arg_param)
 
-    def parse_get_arguments(self, arg, key=None):
-        """Update parsed params if arg in request"""
-        key = key or arg
-        args = self.get_arguments(arg)
-        if args:
-            self.add_to_parsed_params(key, args)
-
-    def parse_boolean(self, arg):
-        """Parse boolean argument types
-
-        Returns True or False if argument is present, otherwise None."""
-
-        arg_param = self.get_argument(arg, None)
-        if not arg_param:
-            return None
-
-        arg_check_int = re.search("^[0-1]$", arg_param)
-        arg_check_bool = re.search("^true|false", arg_param.lower())
-        if arg_check_int:
-            return bool(int(arg_param))
-        elif arg_check_bool:
-            return {"true": True, "false": False}[arg_param.lower()]
-        else:
-            raise exceptions.ParameterValueError(key=arg, value=arg_param)
-
-    def parse_date(self, arg):
-        """ Parse a date argument """
-
-        if arg:
-            try:
-                parameter = datetime.datetime.strptime(
-                    arg, '%Y%m%d').date().isoformat()
-                return parameter
-            except Exception as e:
-                raise exceptions.ParameterValueError(key=arg, value=arg,
-                                                     message=e.message)
-
-    def parse_dates(self, url_arg, key):
-        """Parse the dates arguments from URL params."""
-        datefrom, dateto = url_arg.split('-')
-        datefrom = self.parse_date(datefrom)
-        dateto = self.parse_date(dateto)
-        if datefrom or dateto:
-            self.parsed_params[key] = {}
-            if datefrom:
-                self.parsed_params[key]["gte"] = datefrom
-            if dateto:
-                self.parsed_params[key]["lte"] = dateto
-
-    def add_to_parsed_params(self, param_key, param_value):
-        """Add params to parsed_params if arg exists"""
-        self.parsed_params[param_key] = param_value
+    # def parse_date(self, arg):
+    #     """ Parse a date argument """
+    #
+    #     if arg:
+    #         try:
+    #             parameter = datetime.datetime.strptime(
+    #                 arg, '%Y%m%d').date().isoformat()
+    #             return parameter
+    #         except Exception as e:
+    #             raise exceptions.ParameterValueError(key=arg, value=arg,
+    #                                                  message=e.message)
+    #
+    # def parse_dates(self, url_arg, key):
+    #     """Parse the dates arguments from URL params."""
+    #     datefrom, dateto = url_arg.split('-')
+    #     datefrom = self.parse_date(datefrom)
+    #     dateto = self.parse_date(dateto)
+    #     if datefrom or dateto:
+    #         self.parsed_params[key] = {}
+    #         if datefrom:
+    #             self.parsed_params[key]["gte"] = datefrom
+    #         if dateto:
+    #             self.parsed_params[key]["lte"] = dateto
+    #
+    # def add_to_parsed_params(self, param_key, param_value):
+    #     """Add params to parsed_params if arg exists"""
+    #     self.parsed_params[param_key] = param_value
 
