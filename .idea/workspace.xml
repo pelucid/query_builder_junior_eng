@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ef718012-00eb-496b-b209-7741962b54dd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/query_builder/tests/unittests/test_filter_types/test_collection_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/query_builder/app/elastic/piston.py" beforeDir="false" afterPath="$PROJECT_DIR$/query_builder/app/elastic/piston.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/query_builder/app/handlers/company_query_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/query_builder/app/handlers/company_query_builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/query_builder/app/handlers/filter_types/base_filter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/query_builder/config/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/query_builder/config/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/query_builder/tests/unittests/test_filter_types/test_numeric_range.py" beforeDir="false" afterPath="$PROJECT_DIR$/query_builder/tests/unittests/test_filter_types/test_numeric_range.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/query_builder/tests/unittests/test_filter_types/test_collection_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/query_builder/tests/unittests/test_filter_types/test_collection_test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -74,8 +69,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/query_builder/tests/unittests/test_filter_types/test_collection_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+            <state relative-caret-position="210">
+              <caret line="14" column="26" lean-forward="true" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -271,6 +266,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
@@ -292,7 +288,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.pytest in test_filter_types">
+  <component name="RunManager" selected="Python tests.pytest in test_collection_test.py">
     <configuration name="Debugrun" type="PythonConfigurationType" factoryName="Python">
       <module name="query_builder_junior_eng" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -344,21 +340,6 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_boolean.test_raised_output_validation_error" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="query_builder_junior_eng" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="$USER_HOME$/interview_env/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_boolean.test_raised_output_validation_error&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration name="pytest for test_collection_test.test_multiple_collection_results" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="query_builder_junior_eng" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -372,6 +353,21 @@
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;test_collection_test.test_multiple_collection_results&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest in test_collection_test.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="query_builder_junior_eng" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="$USER_HOME$/interview_env/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/query_builder/tests/unittests/test_filter_types/test_collection_test.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <configuration name="pytest in test_filter_types" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
@@ -406,19 +402,19 @@
     </configuration>
     <list>
       <item itemvalue="Python.Debugrun" />
-      <item itemvalue="Python tests.pytest for test_boolean.test_raised_output_validation_error" />
       <item itemvalue="Python tests.pytest for test_boolean.test_filter_if_false" />
       <item itemvalue="Python tests.pytest in unittests" />
       <item itemvalue="Python tests.pytest in test_filter_types" />
       <item itemvalue="Python tests.pytest for test_collection_test.test_multiple_collection_results" />
+      <item itemvalue="Python tests.pytest in test_collection_test.py" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest in test_collection_test.py" />
         <item itemvalue="Python tests.pytest in test_filter_types" />
         <item itemvalue="Python tests.pytest for test_collection_test.test_multiple_collection_results" />
         <item itemvalue="Python tests.pytest in unittests" />
         <item itemvalue="Python tests.pytest for test_boolean.test_filter_if_false" />
-        <item itemvalue="Python tests.pytest for test_boolean.test_raised_output_validation_error" />
       </list>
     </recent_temporary>
   </component>
@@ -436,12 +432,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_in_test_filter_types - 2019.07.31 at 16h 19m 06s.xml">
-      <configuration name="pytest in test_filter_types" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_test_filter_types - 2019.07.31 at 16h 25m 18s.xml">
-      <configuration name="pytest in test_filter_types" configurationId="tests" />
-    </history-entry>
     <history-entry file="pytest_in_test_filter_types - 2019.07.31 at 16h 28m 26s.xml">
       <configuration name="pytest in test_filter_types" configurationId="tests" />
     </history-entry>
@@ -464,6 +454,12 @@
       <configuration name="pytest in test_filter_types" configurationId="tests" />
     </history-entry>
     <history-entry file="pytest_in_test_filter_types - 2019.07.31 at 16h 43m 47s.xml">
+      <configuration name="pytest in test_filter_types" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_test_filter_types - 2019.07.31 at 16h 44m 48s.xml">
+      <configuration name="pytest in test_filter_types" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_test_filter_types - 2019.07.31 at 16h 50m 00s.xml">
       <configuration name="pytest in test_filter_types" configurationId="tests" />
     </history-entry>
   </component>
@@ -802,8 +798,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/query_builder/tests/unittests/test_filter_types/test_collection_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        <state relative-caret-position="210">
+          <caret line="14" column="26" lean-forward="true" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>

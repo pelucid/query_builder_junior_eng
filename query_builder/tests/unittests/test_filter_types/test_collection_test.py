@@ -9,7 +9,7 @@ from query_builder.app.filter_types import Collection
     ('cid', ['1'])
 ])
 
-def test_multiple_collection_results(key, values, expected_result):
+def test_multiple_collection_results(key, values):
     c = Collection(key, values)
     c.parse_and_validate()
     output = c.serialise()
