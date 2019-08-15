@@ -83,6 +83,7 @@ class Boolean(BaseFilter):
 
 
     def _validate(self):
+        """No validation needed"""
         pass
 
     def serialise(self):
