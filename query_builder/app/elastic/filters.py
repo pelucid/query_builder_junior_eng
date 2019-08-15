@@ -24,7 +24,7 @@ def basic_filters(params):
                                                    params["sectors"]))
 
     if 'ecommerce' in params:
-        filters.append({"term": {"ecommerce.is_ecommerce": True}})
+        filters.append({"term": {"ecommerce.is_ecommerce": params['ecommerce']}})
 
     if 'exclude_tps' in params:
         f = {"missing": {"field": "tps"}}
